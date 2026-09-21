@@ -1,0 +1,892 @@
+<?php include 'db.php';
+ 
+$editData = null;
+ 
+if (isset($_POST['save'])) {
+ 
+    $fname   = $_POST['fname'];
+ 
+    $lname   = $_POST['lname'];
+ 
+     $email  = $_POST['email'];
+ 
+     $birthdate = $_POST['birthdate']
+ 
+     $gender = $_POST['gender'];
+ 
+     $phone   = $_POST['phone'];
+ 
+     $password   = $_POST['password'];
+ 
+     $uname   = $_POST['uname'];
+ 
+     $address   = $_POST['address'];
+ 
+    if (!empty($_POST['id'])) {
+ 
+         $id = (int)$_POST['id'];
+ 
+        $conn->query("UPDATE users SET
+ 
+             fname='$fname',
+ 
+             lname='$lname',
+ 
+             email='$email',
+ 
+             birthdate='$birthdate'
+ 
+             gender='$gender',
+ 
+             phone='$phone',
+ 
+             password='$password',
+ 
+             uname='$uname',
+ 
+             address='$address',
+ 
+             
+ 
+             WHERE id=$id
+ 
+         ");
+ 
+     }
+ 
+     else {
+ 
+         $conn->query("INSERT INTO users (fname, lname, email, birthdate, gender, phone, password, uname, address )
+ 
+         VALUES ('$fname','$lname', '$email', '$birthdate', '$gender', '$phone', '$password', '$uname', '$address')");
+ 
+     }
+ 
+}
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+ 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+ 
+           
+ 
+        }
+ 
+        body {
+            min-height: 100vh;
+           
+            backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(8px);
+ 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+        }
+ 
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: transparent (9px);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+ 
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+ 
+        .header h1 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+ 
+        .header p {
+            color: #777;
+        }
+ 
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+ 
+        .input-group {
+            margin-bottom: 18px;
+            flex: 1;
+        }
+ 
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #444;
+        }
+ 
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+ 
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+ 
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+ 
+        .radio-group {
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+        }
+ 
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+ 
+        .radio-option input {
+            width: auto;
+        }
+ 
+        .password-box {
+            position: relative;
+        }
+ 
+        .password-box input {
+            padding-right: 70px;
+        }
+ 
+        .show-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #d7eb56;
+            cursor: pointer;
+            font-weight: bold;
+        }
+ 
+        .strength {
+            margin-top: 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+ 
+        .weak {
+            color: red;
+        }
+ 
+        .medium {
+            color: orange;
+        }
+ 
+        .strong {
+            color: green;
+        }
+ 
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0 20px;
+        }
+ 
+        .terms input {
+            width: auto;
+        }
+ 
+        .terms label {
+            margin: 0;
+            font-weight: normal;
+            font-size: 14px;
+        }
+ 
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+ 
+        button {
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+ 
+        .register-btn {
+            flex: 1;
+            background: #d8ea66;
+            color: white;
+        }
+ 
+        .register-btn:hover {
+            background: #5568d8;
+        }
+ 
+ 
+       
+ 
+        .alert {
+            display: none;
+            padding: 13px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+ 
+        .alert.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+ 
+        .alert.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+ 
+       
+ 
+        .summary {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #f5f6ff;
+            border-radius: 10px;
+        }
+ 
+        .summary h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+ 
+        .summary p {
+            margin-bottom: 8px;
+        }
+ 
+        @media (max-width: 600px) {
+ 
+            .container {
+                padding: 25px;
+            }
+ 
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+ 
+            .radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+ 
+            .buttons {
+                flex-direction: column;
+            }
+ 
+            .reset-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+ 
+<body>
+ 
+<div class="container">
+ 
+    <div class="header">
+        <img src="logo.png.png" height="200" width="200">
+        <h1>Registration</h1>
+        <p>Register here!</p>
+    </div>
+ 
+   
+    <div id="alertBox" class="alert"></div>
+ 
+    <form id="registrationForm">
+ 
+       
+        <div class="form-row">
+ 
+            <div class="input-group">
+                <label>First Name</label>
+                <input
+                    type="text"
+                    id="fname"
+                    placeholder="Enter first name"
+                >
+            </div>
+ 
+            <div class="input-group">
+                <label>Last Name</label>
+                <input
+                    type="text"
+                    id="lname"
+                    placeholder="Enter last name"
+                >
+            </div>
+ 
+        </div>
+ 
+         <div class="input-group">
+ 
+            <label>User Name</label>
+ 
+            <input
+                type="text"
+                id="uname"
+                placeholder="Enter user name"
+            >
+ 
+        </div>
+ 
+       
+        <div class="input-group">
+ 
+            <label>Email Address</label>
+ 
+            <input
+                type="email"
+                id="email"
+                placeholder="example@email.com"
+            >
+ 
+        </div>
+ 
+     
+        <div class="input-group">
+ 
+            <label>Contact Number</label>
+ 
+            <input
+                type="text"
+                id="phone"
+                placeholder="09XXXXXXXXX"
+                maxlength="11"
+            >
+ 
+        </div>
+ 
+     
+        <div class="input-group">
+ 
+            <label>Birthdate</label>
+ 
+            <input
+                type="date"
+                id="birthdate"
+            >
+ 
+        </div>
+ 
+       
+        <div class="input-group">
+ 
+            <label>Gender</label>
+ 
+            <div class="radio-group">
+ 
+                <label class="radio-option">
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                    >
+                    Male
+                </label>
+ 
+                <label class="radio-option">
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                    >
+                    Female
+                </label>
+ 
+                <label class="radio-option">
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Other"
+                    >
+                    Other
+                </label>
+ 
+            </div>
+ 
+        </div>
+ 
+   
+        <div class="input-group">
+ 
+            <label>Address</label>
+ 
+            <textarea
+                id="address"
+                placeholder="Enter complete address"
+            ></textarea>
+ 
+        </div>
+ 
+       
+        <div class="input-group">
+ 
+            <label>Password</label>
+ 
+            <div class="password-box">
+ 
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Create password"
+                >
+ 
+                <button
+                    type="button"
+                    class="show-password"
+                    onclick="togglePassword('password', this)"
+                >
+                    Show
+                </button>
+ 
+            </div>
+ 
+            <div id="strength" class="strength"></div>
+ 
+        </div>
+ 
+   
+ 
+         
+ 
+        <div class="buttons">
+ 
+            <button
+                type="submit"
+                class="register-btn"
+            >
+                Register
+            </button>
+ 
+        </div>
+ 
+    </form>
+ 
+ 
+   
+ 
+    <div id="summary" class="summary">
+ 
+        <h3>Registration Successful!</h3>
+ 
+        <p>
+            <strong>Name:</strong>
+            <span id="summaryName"></span>
+        </p>
+ 
+        <p>
+            <strong>Email:</strong>
+            <span id="summaryEmail"></span>
+        </p>
+ 
+        <p>
+            <strong>Contact:</strong>
+            <span id="summaryPhone"></span>
+        </p>
+ 
+        <p>
+            <strong>Birthdate:</strong>
+            <span id="summaryBirthdate"></span>
+        </p>
+ 
+        <p>
+            <strong>Gender:</strong>
+            <span id="summaryGender"></span>
+        </p>
+ 
+        <p>
+            <strong>Address:</strong>
+            <span id="summaryAddress"></span>
+        </p>
+ 
+    </div>
+ 
+</div>
+ 
+ 
+<script>
+ 
+    const form = document.getElementById("registrationForm");
+    const password = document.getElementById("password");
+    const strength = document.getElementById("strength");
+    const alertBox = document.getElementById("alertBox");
+ 
+ 
+    password.addEventListener("input", function () {
+ 
+        const value = password.value;
+ 
+        if (value.length === 0) {
+ 
+            strength.textContent = "";
+ 
+        } else if (value.length < 6) {
+ 
+            strength.textContent = "Weak Password";
+            strength.className = "strength weak";
+ 
+        } else if (
+            value.length >= 6 &&
+            !/[A-Z]/.test(value)
+        ) {
+ 
+            strength.textContent = "Medium Password";
+            strength.className = "strength medium";
+ 
+        } else if (
+            value.length >= 8 &&
+            /[A-Z]/.test(value) &&
+            /[0-9]/.test(value)
+        ) {
+ 
+            strength.textContent = "Strong Password";
+            strength.className = "strength strong";
+ 
+        } else {
+ 
+            strength.textContent = "Medium Password";
+            strength.className = "strength medium";
+        }
+ 
+    });
+ 
+ 
+   
+ 
+    function togglePassword(id, button) {
+ 
+        const input = document.getElementById(id);
+ 
+        if (input.type === "password") {
+ 
+            input.type = "text";
+            button.textContent = "Hide";
+ 
+        } else {
+ 
+            input.type = "password";
+            button.textContent = "Show";
+ 
+        }
+ 
+    }
+ 
+ 
+   
+   
+ 
+    function showAlert(message, type) {
+ 
+        alertBox.textContent = message;
+ 
+        alertBox.className = "alert " + type;
+ 
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+ 
+    }
+ 
+ 
+   
+   
+    form.addEventListener("submit", function(event) {
+ 
+        event.preventDefault();
+ 
+ 
+        const firstName =
+            document.getElementById("firstName").value.trim();
+ 
+        const lastName =
+            document.getElementById("lastName").value.trim();
+ 
+        const email =
+            document.getElementById("email").value.trim();
+ 
+        const phone =
+            document.getElementById("phone").value.trim();
+ 
+        const birthdate =
+            document.getElementById("birthdate").value;
+ 
+        const address =
+            document.getElementById("address").value.trim();
+ 
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+ 
+        const gender =
+            document.querySelector(
+                'input[name="gender"]:checked'
+            );
+ 
+        const terms =
+            document.getElementById("terms").checked;
+ 
+ 
+       
+           
+ 
+        if (
+            !firstName ||
+            !lastName ||
+            !email ||
+            !phone ||
+            !birthdate ||
+            !address ||
+            !password.value ||
+            !confirmPassword
+        ) {
+ 
+            showAlert(
+                "Please complete all required fields.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+       
+       
+ 
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ 
+        if (!emailPattern.test(email)) {
+ 
+            showAlert(
+                "Please enter a valid email address.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+ 
+        const phonePattern =
+            /^09[0-9]{9}$/;
+ 
+        if (!phonePattern.test(phone)) {
+ 
+            showAlert(
+                "Contact number must be 11 digits and start with 09.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+     
+ 
+        if (!gender) {
+ 
+            showAlert(
+                "Please select your gender.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+   
+       
+ 
+        if (password.value.length < 6) {
+ 
+            showAlert(
+                "Password must be at least 6 characters.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+   
+ 
+        if (password.value !== confirmPassword) {
+ 
+            showAlert(
+                "Passwords do not match.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+ 
+        if (!terms) {
+ 
+            showAlert(
+                "Please agree to the Terms and Conditions.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+        let users =
+            JSON.parse(localStorage.getItem("users")) || [];
+ 
+ 
+        const existingUser =
+            users.find(
+                user => user.email === email
+            );
+ 
+ 
+        if (existingUser) {
+ 
+            showAlert(
+                "This email is already registered.",
+                "error"
+            );
+ 
+            return;
+        }
+ 
+ 
+ 
+        const newUser = {
+ 
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            birthdate: birthdate,
+            gender: gender.value,
+            address: address
+ 
+        };
+ 
+ 
+        users.push(newUser);
+ 
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+ 
+ 
+ 
+        showAlert(
+            "Registration completed successfully!",
+            "success"
+        );
+ 
+ 
+ 
+        document.getElementById("summaryName").textContent =
+            firstName + " " + lastName;
+ 
+        document.getElementById("summaryEmail").textContent =
+            email;
+ 
+        document.getElementById("summaryPhone").textContent =
+            phone;
+ 
+        document.getElementById("summaryBirthdate").textContent =
+            birthdate;
+ 
+        document.getElementById("summaryGender").textContent =
+            gender.value;
+ 
+        document.getElementById("summaryAddress").textContent =
+            address;
+ 
+ 
+        document.getElementById("summary").style.display =
+            "block";
+ 
+ 
+     
+ 
+        form.reset();
+ 
+        strength.textContent = "";
+ 
+    });
+ 
+ 
+ 
+    form.addEventListener("reset", function() {
+ 
+        setTimeout(function() {
+ 
+            alertBox.className = "alert";
+            alertBox.textContent = "";
+ 
+            document.getElementById("summary").style.display =
+                "none";
+ 
+            strength.textContent = "";
+ 
+        }, 100);
+ 
+    });
+ 
+</script>
+ 
+</body>
+</html>
