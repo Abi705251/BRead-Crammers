@@ -27,6 +27,6 @@ class Regestrationform extends BaseController
 
         $userModel->insert($data);
 
-        return redirect()->to('/Regestrationform')->with('message', 'Registered successfully!');
+        return redirect()->to(site_url('/'))->with('message', 'Registered successfully!');
     }
 }
