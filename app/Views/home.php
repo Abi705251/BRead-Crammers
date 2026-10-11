@@ -119,7 +119,8 @@
 
     <div id="alertBox"></div>
 
-    <form id="registrationForm" action="<= site _url('Regestrationform/save') ?>" method="post">
+    <form id="registrationForm" action="<?= site_url('Regestrationform/save') ?>" method="post">
+        <?= csrf_field() ?>
 
         <div class="form-row">
 
