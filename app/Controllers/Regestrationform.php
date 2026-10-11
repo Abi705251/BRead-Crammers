@@ -13,15 +13,20 @@ class Regestrationform extends BaseController
     {
         $userModel = new UserModel();
 
+        $lastUser = $userModel->orderBy('ID', 'DESC')->first();
+        $nextNum = $lastUser ? intval(substr($lastUser['userID'], 3)) + 1 : 16;
+        $newUserID = 'SS-' . str_pad($nextNum, 5, '0', STR_PAD_LEFT);
+
         $data = [
-            'fname'      => $this->request->getPost('fname'),
-            'lname'      => $this->request->getPost('lname'),
+            'userID'     => $newUserID, 'role' => 'Customer',
+            'firstName'      => $this->request->getPost('fname'),
+            'lastName'      => $this->request->getPost('lname'),
             'email'      => $this->request->getPost('email'),
             'birthdate'  => $this->request->getPost('birthdate'),
             'gender'     => $this->request->getPost('gender'),
             'phone'      => $this->request->getPost('phone'),
             'password'   => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'uname'      => $this->request->getPost('uname'),
+            'username'      => $this->request->getPost('uname'),
             'address'    => $this->request->getPost('address'),
         ];
 
