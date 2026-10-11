@@ -119,7 +119,7 @@
 
     <div id="alertBox"></div>
 
-    <form id="registrationForm">
+    <form id="registrationForm" action="<= site _url('Regestrationform/save') ?>" method="post">
 
         <div class="form-row">
 
@@ -128,7 +128,8 @@
                 <input
                     type="text"
                     id="fname"
-                    placeholder="Enter first name">
+                    name="fname"
+                    placeholder="Enter first name" required>
             </div>
 
             <div class="input-group">
@@ -136,7 +137,8 @@
                 <input
                     type="text"
                     id="lname"
-                    placeholder="Enter last name">
+                    name="lname"
+                    placeholder="Enter last name" required>
             </div>
 
         </div>
@@ -148,7 +150,9 @@
             <input
                 type="text"
                 id="uname"
+                name="uname"
                 placeholder="Enter user name"
+                required
             >
 
         </div>
@@ -161,7 +165,9 @@
             <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="example@email.com"
+                required
             >
 
         </div>
@@ -174,8 +180,10 @@
             <input
                 type="text"
                 id="phone"
+                name="phone"
                 placeholder="09XXXXXXXXX"
                 maxlength="11"
+                required
             >
 
         </div>
@@ -188,6 +196,7 @@
             <input
                 type="date"
                 id="birthdate"
+                name="birthdate" required
             >
 
         </div>
@@ -221,7 +230,7 @@
                     <input
                         type="radio"
                         name="gender"
-                        value="Other"
+                        value="Other" required
                     >
                     Other
                 </label>
@@ -237,6 +246,7 @@
 
             <textarea
                 id="address"
+                name="address"
                 placeholder="Enter complete address"
             ></textarea>
 
@@ -252,7 +262,8 @@
                 <input
                     type="password"
                     id="password"
-                    placeholder="Create password"
+                    name="password"
+                    placeholder="Create password" required
                 >
 
                 <button
@@ -532,215 +543,7 @@ function ShowPage(page){
     localStorage.setItem("users", JSON.stringify(users));
     
     const founderExists = users.some(user => user.username === "kittykat16");
-
-const form = document.getElementById("registrationForm");
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-
-        const firstName =
-            document.getElementById("fname").value.trim();
-
-        const lastName =
-            document.getElementById("lname").value.trim();
-
-        const username = 
-            document.getElementById("uname").value.trim();
-
-        const email =
-            document.getElementById("email").value.trim();
-
-        const phone =
-            document.getElementById("phone").value.trim();
-
-        const birthdate =
-            document.getElementById("birthdate").value;
-
-        const address =
-            document.getElementById("address").value.trim();
-
-        const passwordValue =
-            document.getElementById("password").value.trim();
-
-        const confirmPassword =
-            document.getElementById("ConfirmPassword").value;
-
-        const gender =
-            document.querySelector(
-                'input[name="gender"]:checked'
-            );
-
-
-        if (
-            !firstName ||
-            !lastName ||
-            !username ||
-            !email ||
-            !phone ||
-            !birthdate ||
-            !address ||
-            !passwordValue ||
-            !confirmPassword 
-        ) 
-        {
-
-            showAlert(
-                "Please complete all required fields.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(email)) {
-
-            showAlert(
-                "Please enter a valid email address.",
-                "error"
-            );
-
-            return;
-        }
-
-
-
-        const phonePattern =
-            /^09[0-9]{9}$/;
-
-        if (!phonePattern.test(phone)) {
-
-            showAlert(
-                "Contact number must be 11 digits and start with 09.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (!gender) {
-
-            showAlert(
-                "Please select your gender.",
-                "error"
-            );
-
-            return;
-        }
-
-        if (passwordValue.length < 6) {
-
-            showAlert(
-                "Password must be at least 6 characters.",
-                "error"
-            );
-
-            return;
-        }
-
-        if (passwordValue !== confirmPassword) {
-
-            showAlert(
-                "Passwords do not match.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        users =
-            JSON.parse(localStorage.getItem("users")) || [];
-
-        const existingEmail = users.find(user => user.email === email);
-
-        if (existingEmail) {
-            showAlert("This email is already registered", "error");
-            return;
-        }
-
-
-        const existingUser =
-            users.find(
-                user => user.username === username
-            );
-
-
-        if (existingUser) {
-
-            showAlert(
-                "This Username is already taken.",
-                "error");
-                return;
-        
-        }
-
-
-        const newUser = {
-
-            userID: "SS-" + Math.floor( 1000 + Math.random() * 90000 ),
-            role: "Customer",
-            firstName: firstName,
-            lastName: lastName,
-            username: username,
-            email: email,
-            phone: phone,
-            birthdate: birthdate,
-            gender: gender.value,
-            address: address,
-            password: passwordValue,
-
-        };
-
-
-        users.push(newUser);
-
-        localStorage.setItem(
-            "users",
-            JSON.stringify(users)
-        );
-
-        showAlert(
-            "Registration completed successfully!",
-            "success"
-        );
-
-
-
-        document.getElementById("summaryName").textContent =
-            firstName + " " + lastName;
-
-        document.getElementById("summaryUsername").textContent =
-        username;
-
-        document.getElementById("summaryEmail").textContent =
-            email;
-
-        document.getElementById("summaryPhone").textContent =
-            phone;
-
-        document.getElementById("summaryBirthdate").textContent =
-            birthdate;
-
-        document.getElementById("summaryGender").textContent =
-            gender.value;
-
-        document.getElementById("summaryAddress").textContent =
-            address;
-
-
-        document.getElementById("summary").style.display =
-            "block";
-
-        form.reset();
-
-        strength.textContent = "";
-
-    });
+    const form = document.getElementById("registrationForm");
 
     form.addEventListener("reset", function() {
 
