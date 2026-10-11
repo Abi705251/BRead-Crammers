@@ -125,20 +125,20 @@
         <div class="form-row">
 
             <div class="input-group">
-                <label for="fname">First Name</label>
+                <label for="firstName">First Name</label>
                 <input
                     type="text"
-                    id="fname"
-                    name="fname"
+                    id="firstName"
+                    name="firstName"
                     placeholder="Enter first name" required>
             </div>
 
             <div class="input-group">
-                <label for="lname">Last Name</label>
+                <label for="lastName">Last Name</label>
                 <input
                     type="text"
-                    id="lname"
-                    name="lname"
+                    id="lastName"
+                    name="lastName"
                     placeholder="Enter last name" required>
             </div>
 
@@ -146,12 +146,12 @@
 
          <div class="input-group">
 
-            <label for="uname">User Name</label>
+            <label for="username">User Name</label>
 
             <input
                 type="text"
-                id="uname"
-                name="uname"
+                id="username"
+                name="username"
                 placeholder="Enter user name"
                 required
             >
